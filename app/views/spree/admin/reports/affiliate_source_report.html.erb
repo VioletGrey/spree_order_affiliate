@@ -2,31 +2,13 @@
   <%= "Affiliate Source Report" %>
 <% end %>
 
-<% content_for :page_actions do %>
-  <li><%= link_to_with_icon 'icon-arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
-<% end %>
+<%= render :partial => 'page_actions' %>
 
-<% content_for :table_filter_title do %>
-  <%= Spree.t(:date_range) %>
-<% end %>
+<%= render :partial => 'spree/admin/affiliate_codes/date_range' %>
 
 <% content_for :table_filter do %>
   <%= search_form_for @search, :url => spree.affiliate_source_report_admin_reports_path  do |s| %>
-    <div class="date-range-filter field align-center">
-        <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
-        <%= s.text_field :created_at_gt, :class => 'datepicker datepicker-from' %>
-
-        <span class="range-divider">
-          <i class="icon-arrow-right"></i>
-        </span>
-
-        <%= s.text_field :created_at_lt, :class => 'datepicker datepicker-to' %>
-        <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
-    </div>
-
-    <div class="actions filter-actions">
-      <%= button Spree.t(:search), 'icon-search'  %>
-    </div>
+    <%= render :partial => 'spree/admin/affiliate_codes/search_form', :locals => { :s => s } %>
   <% end %>
 <% end %>
 
@@ -43,9 +25,9 @@
     <% @report.each do |key, value| %>
     <tbody>
       <td><%= link_to key, admin_affiliate_code_path(value[:affiliate_code], params) %></td>
-      <td><%= value[:number] %></td>
-      <td><%= value[:payable_order_value] %></td>
-      <td><%= value[:commission] %></td>
+      <td class="align-right"><%= number_with_delimiter(value[:number]) %></td>
+      <td class="align-right"><%= number_to_currency(value[:payable_order_value], precision: 2) %></td>
+      <td class="align-right"><%= number_to_currency(value[:commission], precision: 2) %></td>
     </tbody>
     <% end %>
   <% else %>
