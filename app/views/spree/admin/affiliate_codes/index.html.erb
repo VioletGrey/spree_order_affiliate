@@ -29,7 +29,7 @@
       <% @affiliate_codes.each do |affiliate_code|%>
       <tr id="affiliate_codes" data-hook="affiliate_codes_row" class="<%= cycle('odd', 'even')%>">
         <td class="align-center"><%= link_to affiliate_code.code, admin_affiliate_code_path(affiliate_code) %></td>
-        <td class="align-center"><%= affiliate_code.rate %></td>
+        <td class="align-right"><%= number_to_percentage(affiliate_code.rate * 100, precision: 2) %></td>
         <td class="actions">
           <%= link_to_edit affiliate_code, :no_text => true %>
           <%= link_to_delete affiliate_code, :no_text => true %>

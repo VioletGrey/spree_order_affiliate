@@ -1,8 +1,4 @@
-<% content_for :page_title do %>
-  <%= 'Affiliate Code : ' + @affiliate_code.code %>
-  <br/>
-  <%= ' Rate : ' + @affiliate_code.rate.to_s %>
-<% end %>
+<%= render :partial => 'title' %>
 
 <% content_for :page_actions do %>
   <li><%= link_to_with_icon 'icon-edit', 'Edit', edit_admin_affiliate_code_path(@affiliate_code), :class => 'button' %></li>
@@ -10,27 +6,11 @@
   <li><%= link_to_with_icon 'icon-file', 'SKU Report', sku_report_admin_affiliate_code_path(@affiliate_code), :class => 'button' %></li>
 <% end %>
 
-<% content_for :table_filter_title do %>
-  <%= Spree.t(:date_range) %>
-<% end %>
+<%= render :partial => 'date_range' %>
 
 <% content_for :table_filter do %>
   <%= search_form_for @search, :url => admin_affiliate_code_path(@affiliate_code)  do |s| %>
-    <div class="date-range-filter field align-center">
-        <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
-        <%= s.text_field :created_at_gt, :class => 'datepicker datepicker-from' %>
-
-        <span class="range-divider">
-          <i class="icon-arrow-right"></i>
-        </span>
-
-        <%= s.text_field :created_at_lt, :class => 'datepicker datepicker-to' %>
-        <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
-    </div>
-
-    <div class="actions filter-actions">
-      <%= button Spree.t(:search), 'icon-search'  %>
-    </div>
+    <%= render :partial => 'search_form', :locals => { :s => s } %>
   <% end %>
 <% end %>
 
@@ -47,9 +27,9 @@
     <% @report.each do |key, value| %>
     <tbody>
       <td><%= key %></td>
-      <td><%= value[:product_sold] %></td>
-      <td><%= value[:payable_order_value] %></td>
-      <td><%= value[:commission] %></td>
+      <td class="align-right"><%= number_with_delimiter(value[:product_sold]) %></td>
+      <td class="align-right"><%= number_to_currency(value[:payable_order_value], precision: 2) %></td>
+      <td class="align-right"><%= number_to_currency(value[:commission], precision: 2) %></td>
     </tbody>
     <% end %>
   <% else %>

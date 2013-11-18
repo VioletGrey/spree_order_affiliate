@@ -1,0 +1,5 @@
+<% content_for :page_title do %>
+  <%= 'Affiliate Code : ' + @affiliate_code.code %>
+  <br/>
+  <%= ' Rate : ' + number_to_percentage(@affiliate_code.rate * 100, precision: 2) %>
+<% end %>
